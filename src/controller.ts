@@ -15,6 +15,7 @@ abstract class Controller {
     }};
     __properties: { [key:string] : {
         key: string;
+        type: Function;
         paramType: string;
     }};
     __path:string;

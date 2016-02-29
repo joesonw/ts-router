@@ -64,9 +64,9 @@ export function Consume(type: MediaType) {
     }
 }
 export function QueryParam(param: string) {
-    return (target:Controller, key:string, index:number) => {
+    return (target:Controller, key:string, index?:number) => {
         if (index !== undefined) {
-            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
             target.__routes             = target.__routes || {};
             target.__routes[key]        = target.__routes[key] || {};
             target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -80,6 +80,7 @@ export function QueryParam(param: string) {
             target.__properties =  target.__properties || {};
             target.__properties[key] = {
                 key: param,
+                type: Reflect.getMetadata(ReflectType.TYPE, target, key),
                 paramType: 'query-param'
             };
         }
@@ -88,7 +89,7 @@ export function QueryParam(param: string) {
 export function PathParam(param: string) {
     return (target:Controller, key:string, index?:number) => {
         if (index !== undefined) {
-            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
             target.__routes             = target.__routes || {};
             target.__routes[key]        = target.__routes[key] || {};
             target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -102,6 +103,7 @@ export function PathParam(param: string) {
             target.__properties =  target.__properties || {};
             target.__properties[key] = {
                 key: param,
+                type: Reflect.getMetadata(ReflectType.TYPE, target, key),
                 paramType: 'path-param'
             };
         }
@@ -110,7 +112,7 @@ export function PathParam(param: string) {
 export function BodyParam(param:string) {
     return (target:Controller, key:string, index?:number) => {
         if (index !== undefined) {
-            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
             target.__routes             = target.__routes || {};
             target.__routes[key]        = target.__routes[key] || {};
             target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -124,6 +126,7 @@ export function BodyParam(param:string) {
             target.__properties =  target.__properties || {};
             target.__properties[key] = {
                 key: param,
+                type: Reflect.getMetadata(ReflectType.TYPE, target, key),
                 paramType: 'body-param'
             };
         }
@@ -132,7 +135,7 @@ export function BodyParam(param:string) {
 export function HeaderParam(param:string) {
     return (target:Controller, key:string, index?:number) => {
         if (index !== undefined) {
-            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+            let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
             target.__routes             = target.__routes || {};
             target.__routes[key]        = target.__routes[key] || {};
             target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -146,6 +149,7 @@ export function HeaderParam(param:string) {
             target.__properties =  target.__properties || {};
             target.__properties[key] = {
                 key: param,
+                type: Reflect.getMetadata(ReflectType.TYPE, target, key),
                 paramType: 'header-param'
             };
         }
@@ -167,7 +171,8 @@ export function Query(target:Controller, key:string, index?:number) {
         target.__properties =  target.__properties || {};
         target.__properties[key] = {
             key: '',
-            paramType: 'params'
+            type: Reflect.getMetadata(ReflectType.TYPE, target, key),
+            paramType: 'query'
         };
     }
 }
@@ -187,6 +192,7 @@ export function Params(target:Controller, key:string, index?:number) {
         target.__properties =  target.__properties || {};
         target.__properties[key] = {
             key: '',
+            type: Reflect.getMetadata(ReflectType.TYPE, target, key),
             paramType: 'params'
         };
     }
@@ -207,6 +213,7 @@ export function Body(target:Controller, key:string, index?:number) {
         target.__properties =  target.__properties || {};
         target.__properties[key] = {
             key: '',
+            type: Reflect.getMetadata(ReflectType.TYPE, target, key),
             paramType: 'body'
         };
     }
@@ -227,6 +234,7 @@ export function Headers(target:Controller, key:string, index?:number) {
         target.__properties =  target.__properties || {};
         target.__properties[key] = {
             key: '',
+            type: Reflect.getMetadata(ReflectType.TYPE, target, key),
             paramType: 'headers'
         };
     }

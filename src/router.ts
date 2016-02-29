@@ -91,23 +91,37 @@ class Router {
 
 
                 function getParameter(parameter) {
+                    let ret;
                     switch (parameter.paramType) {
                         case 'query-param':
-                            return _.get(context.query, parameter.key);
+                            ret = _.get(context.query, parameter.key);
+                            break;
                         case 'path-param':
-                            return _.get(params, parameter.key);
+                            ret = _.get(params, parameter.key);
+                            break;
                         case 'body-param':
-                            return _.get(body, parameter.key);
+                            ret = _.get(body, parameter.key);
+                            break;
                         case 'header-param':
-                            return _.get(context.headers, parameter.key);
+                            ret = _.get(context.headers, parameter.key);
+                            break;
                         case 'query':
-                            return context.query;
+                            ret = context.query;
+                            break;
                         case 'params':
-                            return params;
+                            ret = params;
+                            break;
                         case 'body':
-                            return body;
+                            ret = body;
+                            break;
                         case 'headers':
-                            return context.headers;
+                            ret = context.headers;
+                            break;
+                    }
+                    if ([Object, String, Date, Number, Boolean].indexOf(parameter.type) !== -1) {
+                        return parameter.type(ret);
+                    } else {
+                        return new parameter.type(ret);
                     }
                 }
 
@@ -170,11 +184,6 @@ class Router {
                 let reg = pathToRegexp(router.__path + path, keys);
                 pathReg.push(reg);
                 pathKeys.push(keys);
-            }
-            for (let parameter of route.parameters || []) {
-                if (parameter.paramType === 'path-param') {
-                    let ret = _.find(pathKeys, {name: parameter.key});
-                }
             }
             this._routes.push({
                 routerClass: RouterClass,
