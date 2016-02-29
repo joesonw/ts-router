@@ -40,7 +40,8 @@ export function Path(path:string) {
             let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
             (target as Controller).__routes  = (target as Controller).__routes || {};
             (target as Controller).__routes[key] = (target as Controller).__routes[key] || {};
-            (target as Controller).__routes[key].path = path;
+            (target as Controller).__routes[key].path = (target as Controller).__routes[key].path || [];
+            (target as Controller).__routes[key].path.push(path);
         } else {
             Object.defineProperty((target as (new () => Controller)).prototype, '__path', {
                 value: path

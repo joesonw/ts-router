@@ -18,11 +18,11 @@ import Response from './response';
 class Router {
     private _routes:{
         method: string;
-        path: string;
+        path: string[];
         produce: MediaType;
         consume: MediaType;
-        pathKeys: pathToRegexp.Key[];
-        pathReg: RegExp;
+        pathKeys: pathToRegexp.Key[][];
+        pathReg: RegExp[];
         filter: string;
         route: string;
         routerClass: new (...args) => Controller;
@@ -44,6 +44,7 @@ class Router {
             let params = {};
             let afters = [];
             let befores = [];
+            //  Find match routes
             for (let route of self._routes) {
                 if (route.filter === 'before') {
                     befores.push(route);
@@ -51,13 +52,16 @@ class Router {
                     afters.push(route);
                 } else {
                     if (route.method === context.method) {
-                        let ret = route.pathReg.exec(context.path);
-                        if (ret) {
-                            matchedRoute = route;
-                            for (let i = 0; i < route.pathKeys.length; i++) {
-                                params[route.pathKeys[0].name] = ret[i + 1];
+                        for (let i = 0; i < route.pathReg.length; i++) {
+                            let reg = route.pathReg[i];
+                            let ret = reg.exec(context.path);
+                            if (ret) {
+                                matchedRoute = route;
+                                for (let j = 0; j < route.pathKeys[i].length; j++) {
+                                    params[route.pathKeys[i][j].name] = ret[j + 1];
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
                 }
@@ -67,6 +71,7 @@ class Router {
                 let parameters = [];
                 let body = {};
 
+                //parse body
                 if (matchedRoute.consume === MediaType.JSON &&
                     context.headers['content-type'] === mediaTypeToString(MediaType.JSON)) {
                     body = await new Promise((resolve, reject) => {
@@ -157,9 +162,15 @@ class Router {
         let router = RouterClass.prototype;
         for (let key in router.__routes) {
             let route = router.__routes[key];
-            let keys:pathToRegexp.Key[] = [];
-            let pathReg = pathToRegexp(router.__path + route.path, keys);
-            let pathKeys = keys;
+
+            let pathReg = [];
+            let pathKeys = [];
+            for (let path of route.path || []) {
+                let keys:pathToRegexp.Key[] = [];
+                let reg = pathToRegexp(router.__path + path, keys);
+                pathReg.push(reg);
+                pathKeys.push(keys);
+            }
             for (let parameter of route.parameters || []) {
                 if (parameter.paramType === 'path-param') {
                     let ret = _.find(pathKeys, {name: parameter.key});
@@ -168,7 +179,7 @@ class Router {
             this._routes.push({
                 routerClass: RouterClass,
                 method: route.method,
-                path: router.__path + route.path,
+                path: (route.path || []).map(p => router.__path + p),
                 produce: route.produce,
                 consume: route.consume,
                 filter: route.filter,

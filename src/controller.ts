@@ -3,7 +3,7 @@ abstract class Controller {
     __routes:{ [key:string]: {
         method?:    string;
         filter?:    'after' | 'before';
-        path?:      string;
+        path?:      string[];
         produce?:   MediaType;
         consume?:   MediaType;
         parameters?: {
