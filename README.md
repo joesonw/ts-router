@@ -26,11 +26,13 @@ class UserRoute extends Controller {
 
     constructor() {
         super();
+        //The controller will be created upon each request, so it is safe to initialize variables here for all other routes.
+        this.user = getFromMemoryCache();
     }
 
     @Before
     async getUserBeforeAll(@PathParam('_id') userId:string) {
-        this.userId = await dbAction({_id: this.userId});
+        this.user = await dbAction({_id: this.userId});
     }
 
     @Path('/:_id')
