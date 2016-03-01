@@ -6,9 +6,10 @@ import * as Koa from 'koa';
 import * as pathToRegexp from 'path-to-regexp';
 import * as  _ from 'lodash';
 const parse:any = require('co-body');
-import {MediaType, mediaTypeToString } from './util';
+import {parseMulti, MediaType, mediaTypeToString } from './util';
 import Controller from './controller';
 import Response from './response';
+import Context from './context';
 
 
 
@@ -71,6 +72,7 @@ class Router {
                 let parameters = [];
                 let body = {};
 
+
                 //parse body
                 if (matchedRoute.consume === MediaType.JSON &&
                     context.headers['content-type'] === mediaTypeToString(MediaType.JSON)) {
@@ -87,9 +89,23 @@ class Router {
                     body = await new Promise((resolve, reject) => {
                         parse.text(context).then(resolve).catch(reject);
                     });
+                } else if (matchedRoute.consume === MediaType.MULTIPART &&
+                    (context.headers['content-type'] || '').substr(0, 19) === mediaTypeToString(MediaType.MULTIPART)) {
+                    let result = await parseMulti(context);
+                    body = {};
+                    for (let key in result.fields) {
+                        body[key] = result.fields[key];
+                    }
+                    for (let key in result.files) {
+                        body[key] = result.files[key];
+                    }
                 }
+                let appContext:Context  = context;
+                appContext.requestBody  = body;
+                appContext.params       = params;
 
 
+                let response:Response;
                 function getParameter(parameter) {
                     let ret;
                     switch (parameter.paramType) {
@@ -117,9 +133,20 @@ class Router {
                         case 'headers':
                             ret = context.headers;
                             break;
+                        case 'app-context':
+                            ret = appContext
+                            break;
+                        case 'http-context':
+                            ret = context;
+                            break;
+                        case 'response':
+                            ret = response;
+                            break;
                     }
                     if ([Object, String, Date, Number, Boolean].indexOf(parameter.type) !== -1) {
                         return parameter.type(ret);
+                    } else if ([Response].indexOf(parameter.type) !== -1) {
+                        return ret;
                     } else {
                         return new parameter.type(ret);
                     }
@@ -142,7 +169,7 @@ class Router {
                     }
                     await router[before.route](...p);
                 }
-                let response:Response = await router[matchedRoute.route](...parameters);
+                response = await router[matchedRoute.route](...parameters);
 
                 if (matchedRoute.produce) {
                     response.headers['Content-Type'] = mediaTypeToString(matchedRoute.produce);
@@ -153,9 +180,8 @@ class Router {
                         break;
                 }
 
-                await next;
+                response.send(appContext);
 
-                response.send(context);
                 for (let after of afters) {
                     let p = [];
                     for (let parameter of after.parameters || []) {
@@ -163,6 +189,7 @@ class Router {
                     }
                     await router[after.route](...p);
                 }
+                await next;
                 router = null;
                 klass = null;
                 response = null;

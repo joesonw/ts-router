@@ -124,7 +124,7 @@ declare module "koa" {
         constructor();
         use(middleware: (ctx: Koa.IContext, next: Promise<void>) => any): Koa;
         callback(): (req: http.IncomingMessage, res: http.ServerResponse) => void;
-        listen(port: number, callback?: Function): http.Server;
+        listen(port?: number, callback?: Function): http.Server;
         toJSON(): any;
         inspect(): any;
         onerror(err: any): void;

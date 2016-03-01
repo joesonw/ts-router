@@ -8,7 +8,9 @@
     "install": "gulp build;gulp install"
   },
   "dependencies": {
+    "babel-polyfill": "^6.6.1",
     "co-body": "^4.0.0",
+    "formidable": "^1.0.17",
     "koa": "^2.0.0-alpha.3",
     "lodash": "^4.5.1",
     "path-to-regexp": "^1.2.1",
@@ -20,10 +22,14 @@
     "fs-extra": "^0.26.5",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
-    "gulp-typescript": "^2.12.0"
+    "gulp-istanbul": "^0.10.3",
+    "gulp-typescript": "^2.12.0",
+    "merge2": "^1.0.1",
+    "mocha": "^2.4.5",
+    "supertest": "^1.2.0"
   },
   "engines": {
-      "node": ">=4.0.0"
+    "node": ">=4.0.0"
   },
   "repository": {
     "type": "git",

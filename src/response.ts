@@ -2,6 +2,9 @@
 import * as Koa from 'koa';
 import Cookie from './cookie';
 import {Charset, HttpMethod, MediaType, mediaTypeToString} from './util';
+import Context from './context';
+
+
 
 class Response {
     static status(status: number | Response.Status):ResponseBuilder {
@@ -17,93 +20,12 @@ class Response {
         this.status = status;
         this.headers = headers;
     }
-    send(context: Koa.IContext) {
+    send(context: Context) {
         context.body = this.body;
         context.status = this.status;
         for (let key in this.headers) {
             context.set(key, this.headers[key]);
         }
-    }
-}
-export class ResponseBuilder {
-    private _status: number = 404;
-    private _headers: { [key:string] : string} = {};
-    private _body: any = ''
-    private _type: string = 'text/plain';
-    private _charset: string = 'utf-8';
-    private _allow: string[] = [];
-
-    status(status: number | Response.Status):ResponseBuilder {
-        this._status = status;
-        return this;
-    }
-    header(key:string, value:string):ResponseBuilder {
-        this._headers[key] = value;
-        return this;
-    }
-    type(type: MediaType):ResponseBuilder {
-        this._type = mediaTypeToString(type);
-        return this;
-    }
-    body(body: any):ResponseBuilder {
-        this._body = body;
-        return this;
-    }
-    allow(...methods: (string | HttpMethod)[]):ResponseBuilder {
-        for (let method of methods) {
-            let v:string = method as string;
-            if (typeof method === 'number') {
-                switch (method as HttpMethod) {
-                    case HttpMethod.GET:
-                        v = 'GET';
-                        break;
-                    case HttpMethod.POST:
-                        v = 'POST';
-                        break;
-                    case HttpMethod.PUT:
-                        v = 'PUT';
-                        break;
-                    case HttpMethod.DELETE:
-                        v = 'DELETE';
-                        break;
-                }
-            }
-            this._allow.push(v);
-        }
-        return this;
-    }
-    charset(charset: Charset | string):ResponseBuilder {
-        if (typeof charset === 'string') {
-            this._charset = charset;
-        } else {
-            switch (charset as Charset) {
-                case Charset.UTF8:
-                    this._charset = 'utf-8';
-                    break;
-            }
-        }
-        return this;
-    }
-    expires(date: Date):ResponseBuilder {
-        this._headers['Cache-Control'] = date.toUTCString();
-        return this;
-    }
-    lastModified(date: Date):ResponseBuilder {
-        this._headers['Last-Modified'] = date.toUTCString();
-        return this;
-    }
-    cookie(cookie:Cookie):ResponseBuilder {
-        this._headers['Set-Cookie'] = cookie.toString();
-        return this;
-    }
-    build(): Response {
-        let body                = this._body;
-        let status              = this._status;
-        let headers             = this._headers;
-        headers['Content-Type'] = this._type + ';' + this._charset;
-        headers['Allow']        = this._allow.join(',');
-        let ret = new Response(body, status, headers);
-        return ret;
     }
 }
 
@@ -146,6 +68,92 @@ namespace Response {
         UNSUPPORTED_MEDIA_TYPE = 415,
         USE_PROXY = 305
     };
+}
+
+export class ResponseBuilder {
+    private _status: number = 404;
+    private _headers: { [key:string] : string} = {};
+    private _body: any = ''
+    private _type: string = 'text/plain';
+    private _charset: string = null;
+    private _allow: string[] = [];
+
+    status(status: number | Response.Status):ResponseBuilder {
+        this._status = status;
+        return this;
+    }
+    header(key:string, value:string):ResponseBuilder {
+        this._headers[key] = value;
+        return this;
+    }
+    type(type: MediaType):ResponseBuilder {
+        this._type = mediaTypeToString(type);
+        return this;
+    }
+    body(body: any):ResponseBuilder {
+        this._body = body;
+        return this;
+    }
+    allow(...methods: (string | HttpMethod)[]):ResponseBuilder {
+        for (let method of methods) {
+            let v:string = method as string;
+            if (typeof method === 'number') {
+                switch (method as HttpMethod) {
+                    case HttpMethod.GET:
+                        v = 'GET';
+                        break;
+                    case HttpMethod.POST:
+                        v = 'POST';
+                        break;
+                    case HttpMethod.PUT:
+                        v = 'PUT';
+                        break;
+                    case HttpMethod.DELETE:
+                        v = 'DELETE';
+                        break;
+                }
+            }
+            this._allow.push(v);
+        }
+        return this;
+    }
+    charset(charset: Charset | string):ResponseBuilder {
+        if (typeof charset === 'number') {
+            switch (charset as Charset) {
+                case Charset.UTF8:
+                    this._charset = 'utf-8';
+                    break;
+            }
+        } else {
+            this._charset = charset;
+        }
+        return this;
+    }
+    expires(date: Date):ResponseBuilder {
+        this._headers['Cache-Control'] = date.toUTCString();
+        return this;
+    }
+    lastModified(date: Date):ResponseBuilder {
+        this._headers['Last-Modified'] = date.toUTCString();
+        return this;
+    }
+    cookie(cookie:Cookie):ResponseBuilder {
+        this._headers['Set-Cookie'] = cookie.toString();
+        return this;
+    }
+    build(): Response {
+        let body                = this._body;
+        let status              = this._status;
+        let headers             = this._headers;
+        let contentType         = this._type;
+        if (this._charset) {
+            contentType         += '; charset=' + this._charset
+        }
+        headers['Content-Type'] = contentType;
+        headers['Allow']        = this._allow.join(',');
+        let ret = new Response(body, status, headers);
+        return ret;
+    }
 }
 
 export default Response;

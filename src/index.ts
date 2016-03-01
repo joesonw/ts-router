@@ -1,4 +1,4 @@
-
+require('babel-polyfill');
 export * from './util';
 import Response from './response';
 export {Response };
@@ -8,4 +8,6 @@ export * from './decorators';
 import Router from './router';
 export {Router};
 import Controller from './controller';
-export {Controller};
+export {Controller };
+import Context from './context';
+export {Context };

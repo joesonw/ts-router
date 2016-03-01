@@ -1,5 +1,6 @@
 import Controller from './controller';
 import {ReflectType, MediaType } from './util';
+import Context from './context';
 /// <reference path="../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
 import 'reflect-metadata';
 
@@ -13,7 +14,6 @@ export function After(target:Controller, key:string) {
     target.__routes[key]            = target.__routes[key] || {};
     target.__routes[key].filter     = 'after';
 }
-
 export function GET(target:Controller, key:string) {
     target.__routes                 = target.__routes || {};
     target.__routes[key]            = target.__routes[key] || {};
@@ -157,7 +157,7 @@ export function HeaderParam(param:string) {
 }
 export function Query(target:Controller, key:string, index?:number) {
     if (index !== undefined) {
-        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
         target.__routes             = target.__routes || {};
         target.__routes[key]        = target.__routes[key] || {};
         target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -178,7 +178,7 @@ export function Query(target:Controller, key:string, index?:number) {
 }
 export function Params(target:Controller, key:string, index?:number) {
     if (index !== undefined) {
-        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
         target.__routes             = target.__routes || {};
         target.__routes[key]        = target.__routes[key] || {};
         target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -199,7 +199,7 @@ export function Params(target:Controller, key:string, index?:number) {
 }
 export function Body(target:Controller, key:string, index?:number) {
     if (index !== undefined) {
-        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
         target.__routes             = target.__routes || {};
         target.__routes[key]        = target.__routes[key] || {};
         target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -220,7 +220,7 @@ export function Body(target:Controller, key:string, index?:number) {
 }
 export function Headers(target:Controller, key:string, index?:number) {
     if (index !== undefined) {
-        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key);
+        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
         target.__routes             = target.__routes || {};
         target.__routes[key]        = target.__routes[key] || {};
         target.__routes[key].parameters =  target.__routes[key].parameters || [];
@@ -238,4 +238,58 @@ export function Headers(target:Controller, key:string, index?:number) {
             paramType: 'headers'
         };
     }
+}
+export function AppContext(target:Controller, key:string, index?:number) {
+    if (index !== undefined) {
+        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
+        target.__routes             = target.__routes || {};
+        target.__routes[key]        = target.__routes[key] || {};
+        target.__routes[key].parameters =  target.__routes[key].parameters || [];
+        target.__routes[key].parameters[index] = {
+            index: index,
+            type: type,
+            key: '',
+            paramType: 'app-context'
+        };
+    } else {
+        target.__properties =  target.__properties || {};
+        target.__properties[key] = {
+            key: '',
+            type: Reflect.getMetadata(ReflectType.TYPE, target, key),
+            paramType: 'app-context'
+        };
+    }
+}
+export function HttpContext(target:Controller, key:string, index?:number) {
+    if (index !== undefined) {
+        let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
+        target.__routes             = target.__routes || {};
+        target.__routes[key]        = target.__routes[key] || {};
+        target.__routes[key].parameters =  target.__routes[key].parameters || [];
+        target.__routes[key].parameters[index] = {
+            index: index,
+            type: type,
+            key: '',
+            paramType: 'http-context'
+        };
+    } else {
+        target.__properties =  target.__properties || {};
+        target.__properties[key] = {
+            key: '',
+            type: Reflect.getMetadata(ReflectType.TYPE, target, key),
+            paramType: 'http-context'
+        };
+    }
+}
+export function RouteResponse(target:Controller, key:string, index:number) {
+    let type:Function = Reflect.getMetadata(ReflectType.PARAMETER_TYPE, target, key)[index];
+    target.__routes             = target.__routes || {};
+    target.__routes[key]        = target.__routes[key] || {};
+    target.__routes[key].parameters =  target.__routes[key].parameters || [];
+    target.__routes[key].parameters[index] = {
+        index: index,
+        type: type,
+        key: '',
+        paramType: 'response'
+    };
 }
