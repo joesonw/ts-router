@@ -1,14 +1,13 @@
 {
   "name": "ts-router",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "koa router middleware, typescript fully supported, jersey like coding",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "gulp test",
     "install": "gulp build;gulp install"
   },
   "dependencies": {
-    "babel-polyfill": "^6.6.1",
     "co-body": "^4.0.0",
     "formidable": "^1.0.17",
     "koa": "^2.0.0-alpha.3",

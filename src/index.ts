@@ -1,4 +1,3 @@
-require('babel-polyfill');
 export * from './util';
 import Response from './response';
 export {Response };
