@@ -22,6 +22,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-istanbul": "^0.10.3",
+    "gulp-mocha": "^2.2.0",
     "gulp-typescript": "^2.12.0",
     "merge2": "^1.0.1",
     "mocha": "^2.4.5",

@@ -48,7 +48,7 @@ declare module 'ts-router'{
         status: number;
         headers: { [key:string] : string};
         constructor(body:string, status:number, headers: { [key:string] : string});
-        send(context: Koa.IContext);
+        send(context: Context);
     }
     export namespace Response {
         export enum Status {
@@ -107,6 +107,9 @@ declare module 'ts-router'{
     export function Params(target:Controller, key:string, index?:number);
     export function Body(target:Controller, key:string, index?:number);
     export function Headers(target:Controller, key:string, index?:number);
+    export function AppContext(target:Controller, key:string, index?:number);
+    export function HttpContext(target:Controller, key:string, index?:number);
+    export function RouteResponse(target:Controller, key:string, index:number);
 
     export enum MediaType {
         TEXT,
@@ -124,7 +127,9 @@ declare module 'ts-router'{
     }
     export function mediaTypeToString(type: MediaType):string;
     export interface Context extends Koa.IContext{
-        cookie: Cookie;
+        cookie?: Cookie;
+        params?: Object;
+        requestBody?: any;
     }
     export class ReflectType {
         static TYPE:string;
