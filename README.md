@@ -257,7 +257,7 @@ parse `MediaType` to string. e.g, `MediaType.JSON` to `application/json`.
 * `TEMPORARY_REDIRECT` - 307.
 * `UNAUTHORIZED` - 401.
 * `UNSUPPORTED_MEDIA_TYPE` - 415.
-* `USE_PROXY = 305
+* `USE_PROXY` = 305
 
 
 
