@@ -113,6 +113,7 @@ declare module 'ts-router'{
 
     export enum MediaType {
         TEXT,
+        MULTIPART,
         JSON,
         FORM
     }
