@@ -2,5 +2,6 @@ language: node_js
 node_js:
     - 4
 sudo: false
+before_script: "alias gulp='node --harmony `which gulp`'"
 script: "npm install; npm test"
 after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
