@@ -95,40 +95,40 @@ This is the central part where all `Controllers` are controlled.
 
 #### ResponseBuilder
 This is a helper class builds `Response`.
-    * `status(number | Response.Status)` - set response status.
-    * `header(string,string)` - set header.
-    * `type(MediaType)` - set return type.
-    * `body(any)` - it can be an object (can be compiled using `JSON.stringify`) or string.
-    * `allow(...methods: (string | HttpMethod)[])` - set `Allow` header.
-    * `charset(Charset | string)` - set charset of response body.
-    * `expires(Date)` - set `Expires` header.
-    * `lastModified(Date)` - set `Last-Modified` header.
-    * `cookie(Cookie)` - set cookie to be returned from the response.
-    * `build():Response` - finish building Response.
+* `status(number | Response.Status)` - set response status.
+* `header(string,string)` - set header.
+* `type(MediaType)` - set return type.
+* `body(any)` - it can be an object (can be compiled using `JSON.stringify`) or string.
+* `allow(...methods: (string | HttpMethod)[])` - set `Allow` header.
+* `charset(Charset | string)` - set charset of response body.
+* `expires(Date)` - set `Expires` header.
+* `lastModified(Date)` - set `Last-Modified` header.
+* `cookie(Cookie)` - set cookie to be returned from the response.
+* `build():Response` - finish building Response.
 
 #### Response
 This is to be returned from a route;
-    * `static status(number | Response.Status)` - set response status and returns the build helper.
-    * `body: any` - property.
-    * `status: number` - property.
-    * `headers: { [key:string] : string}` - property.
-    * `send(Context)` - to send response to the client.
+* `static status(number | Response.Status)` - set response status and returns the build helper.
+* `body: any` - property.
+* `status: number` - property.
+* `headers: { [key:string] : string}` - property.
+* `send(Context)` - to send response to the client.
 
 #### Context
 This extends `Koa.IContext`
-    * `cookie: Cookie` - property.
-    * `params: Object` - property, parsed path params.
-    * `requestBody: any` - property, parsed request body.
+* `cookie: Cookie` - property.
+* `params: Object` - property, parsed path params.
+* `requestBody: any` - property, parsed request body.
 
 #### Cookie
 Cookie object
-    * `content: string` - property. e.g, `sessionId: 12345678`.
-    * `path: string` - property.
-    * `secure: boolean` - property.
-    * `httpOnly: boolean` - property.
-    * `expires: Date` - property.
-    * `maxAge: number` - property.
-    * `toString():string` - parse the cookie object to `Set-Cookie` header value.
+* `content: string` - property. e.g, `sessionId: 12345678`.
+* `path: string` - property.
+* `secure: boolean` - property.
+* `httpOnly: boolean` - property.
+* `expires: Date` - property.
+* `maxAge: number` - property.
+* `toString():string` - parse the cookie object to `Set-Cookie` header value.
 
 ### Annotations
 
@@ -138,16 +138,16 @@ method decorator, to be ran before all other routes.
 #### `@After`
 method decorator, to be ran after all other routes.
 
-#### '@GET'
+#### `@GET`
 method decorator, set the route method to `GET`.
 
-#### '@POST'
+#### `@POST`
 method decorator, set the route method to `POST`.
 
-#### '@PUT'
+#### `@PUT`
 method decorator, set the route method to `PUT`.
 
-#### '@DELETE'
+#### `@DELETE`
 method decorator, set the route method to `DELETE`.
 
 #### `@Path(string)`
@@ -206,57 +206,58 @@ parameter decorator, retrieve the response after executing route (used in `@Befo
 parse `MediaType` to string. e.g, `MediaType.JSON` to `application/json`.
 
 #### `enum Charset`
-    * `UTF8`
+* `UTF8`
 
 #### `enum HttpMethod`
-    * `GET`
-    * `POST`
-    * `PUT`
-    * `DELETE`
+* `GET`
+* `POST`
+* `PUT`
+* `DELETE`
 
 #### `enum MediaType`
-    * `TEXT`
-    * `MULTIPART`
-    * `JSON`
-    * `FORM`
+* `TEXT`
+* `MULTIPART`
+* `JSON`
+* `FORM`
 
 #### `enum Response.Status`
-    * `ACCEPTED` - 202.
-    * `BAD_GATEWAY` - 502.
-    * `BAD_REQUEST` - 400.
-    * `CONFLICT` - 409.
-    * `CREATED` - 201.
-    * `EXPECTATION_FAILED` - 417.
-    * `FORBIDDEN` - 403.
-    * `FOUND` - 302.
-    * `GATEWAY_TIMEOUT` - 504.
-    * `GONE` - 410.
-    * `HTTP_VERSION_NOT_SUPPORTED` - 505.
-    * `INTERNAL_SERVER_ERROR` - 500.
-    * `LENGTH_REQUIRED` - 411.
-    * `METHOD_NOT_ALLOWED` - 405.
-    * `MOVED_PERMANENTLY` - 301.
-    * `NO_CONTENT` - 204.
-    * `NOT_ACCEPTABLE` - 406.
-    * `NOT_FOUND` - 404.
-    * `NOT_IMPLEMENTED` - 501.
-    * `NOT_MODIFIED` - 304.
-    * `OK` - 200.
-    * `PARTIAL_CONTENT` - 206.
-    * `PAYMENT_REQUIRED` - 402.
-    * `PRECONDITION_FAILED` - 412.
-    * `PROXY_AUTHENTICATION_REQUIRED` - 407.
-    * `REQUEST_ENTITY_TOO_LARGE` - 413.
-    * `REQUEST_TIMEOUT` - 408.
-    * `REQUEST_URI_TOO_LONG` - 414.
-    * `REQUESTED_RANGE_NOT_SATISFIABLE` - 416.
-    * `RESET_CONTENT` - 205.
-    * `SEE_OTHER` - 303.
-    * `SERVICE_UNAVAILABLE` - 503.
-    * `TEMPORARY_REDIRECT` - 307.
-    * `UNAUTHORIZED` - 401.
-    * `UNSUPPORTED_MEDIA_TYPE` - 415.
-    * `USE_PROXY = 305
+
+* `ACCEPTED` - 202.
+* `BAD_GATEWAY` - 502.
+* `BAD_REQUEST` - 400.
+* `CONFLICT` - 409.
+* `CREATED` - 201.
+* `EXPECTATION_FAILED` - 417.
+* `FORBIDDEN` - 403.
+* `FOUND` - 302.
+* `GATEWAY_TIMEOUT` - 504.
+* `GONE` - 410.
+* `HTTP_VERSION_NOT_SUPPORTED` - 505.
+* `INTERNAL_SERVER_ERROR` - 500.
+* `LENGTH_REQUIRED` - 411.
+* `METHOD_NOT_ALLOWED` - 405.
+* `MOVED_PERMANENTLY` - 301.
+* `NO_CONTENT` - 204.
+* `NOT_ACCEPTABLE` - 406.
+* `NOT_FOUND` - 404.
+* `NOT_IMPLEMENTED` - 501.
+* `NOT_MODIFIED` - 304.
+* `OK` - 200.
+* `PARTIAL_CONTENT` - 206.
+* `PAYMENT_REQUIRED` - 402.
+* `PRECONDITION_FAILED` - 412.
+* `PROXY_AUTHENTICATION_REQUIRED` - 407.
+* `REQUEST_ENTITY_TOO_LARGE` - 413.
+* `REQUEST_TIMEOUT` - 408.
+* `REQUEST_URI_TOO_LONG` - 414.
+* `REQUESTED_RANGE_NOT_SATISFIABLE` - 416.
+* `RESET_CONTENT` - 205.
+* `SEE_OTHER` - 303.
+* `SERVICE_UNAVAILABLE` - 503.
+* `TEMPORARY_REDIRECT` - 307.
+* `UNAUTHORIZED` - 401.
+* `UNSUPPORTED_MEDIA_TYPE` - 415.
+* `USE_PROXY = 305
 
 
 
