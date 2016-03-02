@@ -4,7 +4,7 @@
   "description": "koa router middleware, typescript fully supported, jersey like coding",
   "main": "dist/index.js",
   "scripts": {
-    "test": "gulp test",
+    "test": "node --harmony `which gulp` test",
     "install": "gulp build;gulp install"
   },
   "dependencies": {
