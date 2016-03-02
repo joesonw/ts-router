@@ -1,7 +1,8 @@
-
+[![Node version][node-image]][npm-url]
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
+[![Dependencies][david-image]][david-url]
 
 ## Installation
 
@@ -73,7 +74,10 @@ console.log('started');
 
 [npm-image]: https://img.shields.io/npm/v/ts-router.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/ts-router
+[node-image]: https://img.shields.io/node/v/ts-router.svg?style=flat-square
 [travis-image]: https://img.shields.io/travis/joesonw/ts-router/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/joesonw/ts-router
 [coveralls-image]: https://img.shields.io/coveralls/joesonw/ts-router/master.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/joesonw/ts-router?branch=master
+[david-image]: https://img.shields.io/david/joesonw/ts-router.svg?style=flat-square
+[david-url]: https://david-dm.org/joesonw/ts-router
