@@ -5,6 +5,10 @@ class Cookie {
     httpOnly: boolean = true;
     private _expires: Date;
     private _maxAge: number;
+    constructor() {
+        this._expires   = new Date();
+        this._maxAge    = 0;
+    }
     get expires(): Date {
         return this._expires;
     }
@@ -17,7 +21,7 @@ class Cookie {
     }
     set maxAge(date: number) {
         this._expires = new Date(this._expires.getTime() + (date - this.maxAge) * 1000);
-        this.maxAge = date;
+        this._maxAge = date;
     }
     toString():string {
         let ret = this.content;

@@ -25,6 +25,26 @@ class TestController extends tsRouter.Controller {
             body
         }).build();
     }
+
+
+    @tsRouter.Body body:Object;
+    @tsRouter.BodyParam('v1') v1:string;
+    @tsRouter.BodyParam('v2') v2:string;
+
+    @tsRouter.Path('/2')
+    @tsRouter.POST
+    @tsRouter.Consume(tsRouter.MediaType.JSON)
+    @tsRouter.Produce(tsRouter.MediaType.JSON)
+    async index2():Promise<tsRouter.Response> {
+        let body    = this.body;
+        let v1      = this.v1;
+        let v2      = this.v2;
+        return tsRouter.Response.status(200).body({
+            hello: v1,
+            world: v2,
+            body
+        }).build();
+    }
 }
 
 const app = new Koa();
@@ -35,10 +55,29 @@ let server = app.listen();
 describe('POST with body', () => {
     after(() => {
         server.close();
-    })
+    });
     it('response body back in json', function (done)  {
         request(app.listen())
             .post('/test')
+            .send({
+                v1: 'hello',
+                v2: 'world'
+            })
+            .set('Content-Type', 'application/json')
+            .expect('Content-Type', 'application/json')
+            .expect({
+                body: {
+                    v1: 'hello',
+                    v2: 'world'
+                },
+                hello: 'hello',
+                world: 'world'
+            })
+            .expect(200, done);
+    });
+    it('response body back in json', function (done)  {
+        request(app.listen())
+            .post('/test/2')
             .send({
                 v1: 'hello',
                 v2: 'world'

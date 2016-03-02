@@ -8,7 +8,5 @@
 	},
 	"compileOnSave": false,
 	"files": [
-		"get/text.ts",
-		"get/params.ts"
 	]
 }
