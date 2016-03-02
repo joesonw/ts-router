@@ -1,11 +1,22 @@
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![Test coverage][coveralls-image]][coveralls-url]
 
-# Introduction
+## Installation
+
+```
+$ npm install ts-router
+```
+
+    ts-router is supported in node v4+ with `--harmony` flag.
+
+## Introduction
 
 This project is developed in typescript, and usable in typescript. It serves as a routing middleware for koa@next.
 
 More documentations will be added soon, for immediate access to all features, please refer to the declaration file.
 
-# Example
+## Example
 
 ```js
 /// <reference path="./typings/ts-router/ts-router.d.ts"/>
