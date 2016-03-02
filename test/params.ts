@@ -25,6 +25,7 @@ class TestController extends tsRouter.Controller {
     @tsRouter.PathParam('v2') v2:string;
 
     @tsRouter.Path('/2/:v1/:v2')
+    @tsRouter.Path('/3/:v1/:v2')
     @tsRouter.GET
     @tsRouter.Produce(tsRouter.MediaType.JSON)
     async index2():Promise<tsRouter.Response> {
@@ -72,5 +73,18 @@ describe('GET with path paramters', () => {
             })
             .expect(200, done);
     });
-
+    it('response paramters in back in json', function (done)  {
+        request(app.listen())
+            .get('/test/3/hello/world')
+            .expect('Content-Type', 'application/json')
+            .expect({
+                params: {
+                    v1: 'hello',
+                    v2: 'world'
+                },
+                v1: 'hello',
+                v2: 'world'
+            })
+            .expect(200, done);
+    });
 })
