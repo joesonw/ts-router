@@ -145,9 +145,4 @@ declare module 'ts-router'{
         maxAge: number;
         toString():string;
     }
-    export interface Context extends Koa.IContext{
-        cookie?: Cookie;
-        params?: Object;
-        requestBody?: any;
-    }
 }
