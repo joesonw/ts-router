@@ -1,7 +1,3 @@
-/// <reference path="../typings/koa/koa.d.ts"/>
-/// <reference path="../typings/path-to-regexp/path-to-regexp.d.ts"/>
-/// <reference path="../typings/lodash/lodash.d.ts"/>
-
 import * as Koa from 'koa';
 import * as pathToRegexp from 'path-to-regexp';
 import * as  _ from 'lodash';
@@ -38,9 +34,9 @@ class Router {
     constructor() {
     }
 
-    routes(): (ctx:Koa.IContext, next:Promise<void>) => Promise<void> {
+    routes(): (ctx:Koa.Context, next:Function) => Promise<void> {
         let self = this;
-        return async function (context:Koa.IContext, next:Promise<void>):Promise<void> {
+        return async function (context:Koa.Context, next:Function):Promise<void> {
             let matchedRoute;
             let params = {};
             let afters = [];
@@ -189,7 +185,7 @@ class Router {
                     }
                     await router[after.route](...p);
                 }
-                await next;
+                await next();
                 router = null;
                 klass = null;
                 response = null;

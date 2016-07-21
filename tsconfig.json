@@ -1,10 +1,11 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"outDir": "./",
+		"outDir": "./dist",
 		"target": "ES6",
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true,
+        "declaration": true
 	},
 	"compileOnSave": false,
 	"files": [

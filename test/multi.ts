@@ -1,8 +1,3 @@
-/// <reference path="../typings/mocha/mocha.d.ts"/>
-/// <reference path="../typings/chai/chai.d.ts"/>
-/// <reference path="../typings/supertest/supertest.d.ts"/>
-/// <reference path="../typings/koa/koa.d.ts"/>
-
 import * as tsRouter from '../src';
 import * as chai from 'chai';
 import * as request from 'supertest';
@@ -31,13 +26,16 @@ const app = new Koa();
 const router = new tsRouter.Router();
 router.use(TestController);
 app.use(router.routes());
-let server = app.listen();
+let server;
 describe('POST with multipart', () => {
+    before(() => {
+        server = app.listen(3000)
+    })
     after(() => {
         server.close();
     })
-    it('response body back in json', function (done)  {
-        request(app.listen())
+    it('should respond body back in json', function (done)  {
+        request(server)
             .post('/test')
             .field('v1', 'hello')
             .field('v2', 'world')

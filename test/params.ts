@@ -1,8 +1,3 @@
-/// <reference path="../typings/mocha/mocha.d.ts"/>
-/// <reference path="../typings/chai/chai.d.ts"/>
-/// <reference path="../typings/supertest/supertest.d.ts"/>
-/// <reference path="../typings/koa/koa.d.ts"/>
-
 import * as tsRouter from '../src';
 import * as chai from 'chai';
 import * as request from 'supertest';
@@ -40,13 +35,16 @@ const app = new Koa();
 const router = new tsRouter.Router();
 router.use(TestController);
 app.use(router.routes());
-let server = app.listen();
+let server;
 describe('GET with path paramters', () => {
+    before(() => {
+        server = app.listen(3000)
+    })
     after(() => {
         server.close();
     });
-    it('response paramters in back in json', function (done)  {
-        request(app.listen())
+    it('should respond paramters in back in json', function (done)  {
+        request(server)
             .get('/test/hello/world')
             .expect('Content-Type', 'application/json')
             .expect({
@@ -59,8 +57,8 @@ describe('GET with path paramters', () => {
             })
             .expect(200, done);
     });
-    it('response paramters in back in json', function (done)  {
-        request(app.listen())
+    it('should route to correct subroute respond paramters in back in json', function (done)  {
+        request(server)
             .get('/test/2/hello/world')
             .expect('Content-Type', 'application/json')
             .expect({
@@ -73,8 +71,8 @@ describe('GET with path paramters', () => {
             })
             .expect(200, done);
     });
-    it('response paramters in back in json', function (done)  {
-        request(app.listen())
+    it('should route to correct subroute respond paramters in back in json', function (done)  {
+        request(server)
             .get('/test/3/hello/world')
             .expect('Content-Type', 'application/json')
             .expect({

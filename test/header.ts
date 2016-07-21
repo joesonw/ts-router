@@ -1,8 +1,3 @@
-/// <reference path="../typings/mocha/mocha.d.ts"/>
-/// <reference path="../typings/chai/chai.d.ts"/>
-/// <reference path="../typings/supertest/supertest.d.ts"/>
-/// <reference path="../typings/koa/koa.d.ts"/>
-
 import * as tsRouter from '../src';
 import * as chai from 'chai';
 import * as request from 'supertest';
@@ -45,13 +40,16 @@ const app = new Koa();
 const router = new tsRouter.Router();
 router.use(TestController);
 app.use(router.routes());
-let server = app.listen();
+let server;
 describe('GET with headers', () => {
+    before(() => {
+        server = app.listen(3000)
+    })
     after(() => {
         server.close();
     })
-    it('response headers back in json', function (done)  {
-        request(app.listen())
+    it('should respond headers back in json', function (done)  {
+        request(server)
             .get('/test')
             .set('v1', 'hello')
             .set('v2', 'world')
@@ -63,8 +61,8 @@ describe('GET with headers', () => {
             .expect(200, done);
     });
 
-    it('response headers back in json', function (done)  {
-        request(app.listen())
+    it('should route to correct subroute and respondheaders back in json', function (done)  {
+        request(server)
             .get('/test/2')
             .set('v1', 'hello')
             .set('v2', 'world')

@@ -1,8 +1,3 @@
-/// <reference path="../typings/mocha/mocha.d.ts"/>
-/// <reference path="../typings/chai/chai.d.ts"/>
-/// <reference path="../typings/supertest/supertest.d.ts"/>
-/// <reference path="../typings/koa/koa.d.ts"/>
-
 import * as tsRouter from '../src';
 import * as chai from 'chai';
 import * as request from 'supertest';
@@ -16,11 +11,11 @@ let newDate = new Date(date.getTime() + 30 * 1000);
 class TestController extends tsRouter.Controller {
 
     @tsRouter.AppContext context:tsRouter.Context;
-    @tsRouter.HttpContext ctx:Koa.IContext;
+    @tsRouter.HttpContext ctx:Koa.Context;
 
     @tsRouter.Path('')
     @tsRouter.GET
-    async index(@tsRouter.HttpContext ctx:Koa.IContext):Promise<tsRouter.Response> {
+    async index(@tsRouter.HttpContext ctx:Koa.Context):Promise<tsRouter.Response> {
         cookie.expires = date;
         cookie.maxAge = 30;
         return tsRouter.Response
@@ -41,13 +36,16 @@ const app = new Koa();
 const router = new tsRouter.Router();
 router.use(TestController);
 app.use(router.routes());
-let server = app.listen();
+let server;
 describe('GET plain text', () => {
+    before(() => {
+        server = app.listen(3000)
+    })
     after(() => {
         server.close();
     });
     it('response with all response features ', function (done)  {
-        request(app.listen())
+        request(server)
             .get('/test')
             .expect('x-hello', 'world')
             .expect('Content-Type', 'text/plain; charset=utf-8')

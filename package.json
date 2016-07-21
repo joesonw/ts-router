@@ -1,35 +1,37 @@
 {
   "name": "ts-router",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "koa router middleware, typescript fully supported, jersey like coding",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "node --harmony `which gulp` test",
-    "install": "gulp build;gulp install"
+    "test": "rm -rf test-dist;tsc -p tsconfig.test.json;mocha test-dist/test/*.js",
+    "coverage": "rm -rf test-dist;tsc -p tsconfig.test.json;istanbul cover _mocha test-dist/test/*.js",
+    "install": "./node_modules/.bin/tsc -p tsconfig.json"
   },
   "dependencies": {
-    "co-body": "^4.0.0",
+    "@types/chai": "^3.4.29",
+    "@types/koa": "^2.0.29",
+    "@types/lodash": "0.0.28",
+    "@types/mocha": "^2.2.28",
+    "@types/path-to-regexp": "^1.0.28",
+    "@types/supertest": "^1.1.27",
+    "co-body": "^4.2.0",
     "formidable": "^1.0.17",
-    "koa": "^2.0.0-alpha.3",
-    "lodash": "^4.5.1",
-    "path-to-regexp": "^1.2.1",
+    "koa": "^2.0.0",
+    "lodash": "^4.13.1",
+    "path-to-regexp": "^1.5.3",
     "reflect-metadata": "^0.1.3"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
-    "babel-preset-es2015": "^6.5.0",
-    "fs-extra": "^0.26.5",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-istanbul": "^0.10.3",
-    "gulp-mocha": "^2.2.0",
-    "gulp-typescript": "^2.12.0",
-    "merge2": "^1.0.1",
-    "mocha": "^2.4.5",
-    "supertest": "^1.2.0"
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.4",
+    "mocha": "^2.5.3",
+    "supertest": "^1.2.0",
+    "typescript": "^2.1.0-dev.20160721"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "repository": {
     "type": "git",

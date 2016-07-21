@@ -1,8 +1,3 @@
-/// <reference path="../typings/mocha/mocha.d.ts"/>
-/// <reference path="../typings/chai/chai.d.ts"/>
-/// <reference path="../typings/supertest/supertest.d.ts"/>
-/// <reference path="../typings/koa/koa.d.ts"/>
-
 import * as tsRouter from '../src';
 import * as chai from 'chai';
 import * as request from 'supertest';
@@ -22,13 +17,16 @@ const app = new Koa();
 const router = new tsRouter.Router();
 router.use(TestController);
 app.use(router.routes());
-let server = app.listen();
+let server;
 describe('GET plain text', () => {
+    before(() => {
+        server = app.listen(3000)
+    })
     after(() => {
         server.close();
     })
-    it('response plain text in utf8', function (done)  {
-        request(app.listen())
+    it('should respond plain text in utf8', function (done)  {
+        request(server)
             .get('/test')
             .expect('Content-Type', 'text/plain; charset=utf-8')
             .expect('hello')

@@ -1,5 +1,4 @@
 import Cookie from './cookie';
-/// <reference path="../typings/koa/koa.d.ts"/>
 import * as Koa from 'koa';
 const formy:any = require('formidable');
 export enum MediaType {
@@ -29,7 +28,7 @@ export function mediaTypeToString(type: MediaType):string {
             return 'multipart/form-data';
     }
 }
-export interface Context extends Koa.IContext{
+export interface Context extends Koa.Context{
     cookie: Cookie;
 }
 
@@ -42,7 +41,7 @@ export class ReflectType {
 }
 
 
-export function parseMulti(ctx: Koa.IContext, opts?: any):Promise<any> {
+export function parseMulti(ctx: Koa.Context, opts?: any):Promise<any> {
     opts = opts || {};
     return new Promise<any>((resolve, reject) => {
         var fields = {};

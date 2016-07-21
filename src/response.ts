@@ -1,9 +1,7 @@
-/// <reference path="../typings/koa/koa.d.ts"/>
 import * as Koa from 'koa';
 import Cookie from './cookie';
 import {Charset, HttpMethod, MediaType, mediaTypeToString} from './util';
 import Context from './context';
-
 
 
 class Response {
@@ -69,6 +67,8 @@ namespace Response {
         USE_PROXY = 305
     };
 }
+
+export default Response;
 
 export class ResponseBuilder {
     private _status: number = 404;
@@ -155,5 +155,3 @@ export class ResponseBuilder {
         return ret;
     }
 }
-
-export default Response;
