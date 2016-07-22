@@ -6,10 +6,11 @@ import {parseMulti, MediaType, mediaTypeToString } from './util';
 import Controller from './controller';
 import Response from './response';
 import Context from './context';
-
-
-
-
+import {
+    Routes,
+    Properties,
+    RoutePath,
+} from './symbols';
 
 
 class Router {
@@ -152,8 +153,8 @@ class Router {
                     parameters.push(getParameter(parameter));
                 }
                 let klass = matchedRoute.routerClass;
-                for (let key in klass.prototype.__properties || []) {
-                    klass.prototype[key] = getParameter(klass.prototype.__properties[key]);
+                for (let key in klass.prototype[Properties] || []) {
+                    klass.prototype[key] = getParameter(klass.prototype[Properties][key]);
                 }
 
                 let router = new klass();
@@ -197,21 +198,21 @@ class Router {
 
     use<T extends Controller>(RouterClass: new (...args) => T) {
         let router = RouterClass.prototype;
-        for (let key in router.__routes) {
-            let route = router.__routes[key];
+        for (let key in router[Routes]) {
+            let route = router[Routes][key];
 
             let pathReg = [];
             let pathKeys = [];
             for (let path of route.path || []) {
                 let keys:pathToRegexp.Key[] = [];
-                let reg = pathToRegexp(router.__path + path, keys);
+                let reg = pathToRegexp(router[RoutePath] + path, keys);
                 pathReg.push(reg);
                 pathKeys.push(keys);
             }
             this._routes.push({
                 routerClass: RouterClass,
                 method: route.method,
-                path: (route.path || []).map(p => router.__path + p),
+                path: (route.path || []).map(p => router[RoutePath] + p),
                 produce: route.produce,
                 consume: route.consume,
                 filter: route.filter,
