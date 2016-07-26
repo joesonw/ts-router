@@ -23,6 +23,7 @@ class Router {
         pathReg: RegExp[];
         filter: string;
         route: string;
+        injection: Function[];
         routerClass: new (...args) => Controller;
         parameters: {
             index: number;
@@ -166,6 +167,12 @@ class Router {
                     }
                     await router[before.route](...p);
                 }
+
+                const injections = matchedRoute.injection || [];
+                for (const injection of injections) {
+                    await injection(appContext);
+                }
+
                 response = await router[matchedRoute.route](...parameters);
 
                 if (matchedRoute.produce) {
@@ -215,6 +222,7 @@ class Router {
                 path: (route.path || []).map(p => router[RoutePath] + p),
                 produce: route.produce,
                 consume: route.consume,
+                injection: route.injection,
                 filter: route.filter,
                 route: key,
                 pathReg: pathReg,

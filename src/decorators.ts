@@ -1,7 +1,6 @@
 import Controller from './controller';
 import {ReflectType, MediaType } from './util';
 import Context from './context';
-/// <reference path="../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
 import 'reflect-metadata';
 import {
     Routes,
@@ -38,6 +37,14 @@ export function DELETE(target:Controller, key:string) {
     target[Routes]                 = target[Routes] || {};
     target[Routes][key]            = target[Routes][key] || {};
     target[Routes][key].method     = 'DELETE';
+}
+export function Inject(func:Function) {
+    return (target:Controller, key:string) => {
+        target[Routes]                 = target[Routes] || {};
+        target[Routes][key]            = target[Routes][key] || {};
+        target[Routes][key].injection  = target[Routes][key].injection || [];
+        target[Routes][key].injection.push(func);
+    }
 }
 export function Path(path:string) {
     return (target:Controller | (new () => Controller), key?:string) => {
