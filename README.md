@@ -150,6 +150,9 @@ method decorator, set the route method to `PUT`.
 #### `@DELETE`
 method decorator, set the route method to `DELETE`.
 
+#### `@Inject(Function)`
+method decorator, run before route and after controller before wares.
+
 #### `@Path(string)`
 method decorator, set the route path. (Can be applied multiple times on one route).
 
