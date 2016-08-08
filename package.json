@@ -1,13 +1,14 @@
 {
   "name": "ts-router",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "koa router middleware, typescript fully supported, jersey like coding",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "test": "rm -rf test-dist;tsc -p tsconfig.test.json;mocha test-dist/test/*.js",
     "coverage": "rm -rf test-dist;tsc -p tsconfig.test.json;istanbul cover _mocha test-dist/test/*.js",
-    "install": "./node_modules/.bin/tsc -p tsconfig.json"
+    "build": "./node_modules/.bin/tsc -p tsconfig.json",
+    "lint": "./node_modules/.bin/tslint -c tslint.json ./src/**/*.ts"
   },
   "dependencies": {
     "@types/chai": "^3.4.29",
@@ -28,6 +29,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "supertest": "^1.2.0",
+    "tslint": "^3.14.0",
     "typescript": "^2.1.0-dev.20160721"
   },
   "engines": {
