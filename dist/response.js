@@ -81,7 +81,12 @@ class ResponseBuilder {
         return this;
     }
     type(type) {
-        this._type = util_1.mediaTypeToString(type);
+        if (typeof (type) === 'string') {
+            this._type = type;
+        }
+        else {
+            this._type = util_1.mediaTypeToString(type);
+        }
         return this;
     }
     body(body) {

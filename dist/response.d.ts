@@ -63,7 +63,7 @@ export declare class ResponseBuilder {
     private _allow;
     status(status: number | Response.Status): ResponseBuilder;
     header(key: string, value: string): ResponseBuilder;
-    type(type: MediaType): ResponseBuilder;
+    type(type: MediaType | string): ResponseBuilder;
     body(body: any): ResponseBuilder;
     allow(...methods: (string | HttpMethod)[]): ResponseBuilder;
     charset(charset: Charset | string): ResponseBuilder;

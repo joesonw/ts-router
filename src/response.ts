@@ -86,8 +86,12 @@ export class ResponseBuilder {
         this._headers[key] = value;
         return this;
     }
-    type(type: MediaType):ResponseBuilder {
-        this._type = mediaTypeToString(type);
+    type(type: MediaType | string):ResponseBuilder {
+        if (typeof(type) === 'string') {
+            this._type = type;
+        } else {
+            this._type = mediaTypeToString(type);
+        }
         return this;
     }
     body(body: any):ResponseBuilder {
