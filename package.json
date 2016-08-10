@@ -1,6 +1,6 @@
 {
   "name": "ts-router",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "koa router middleware, typescript fully supported, jersey like coding",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

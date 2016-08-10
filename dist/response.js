@@ -17,7 +17,6 @@ class Response {
         for (const key in this.headers) {
             context.set(key, this.headers[key]);
         }
-        console.log(context);
     }
 }
 (function (Response) {
