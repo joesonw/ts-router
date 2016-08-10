@@ -61,7 +61,7 @@ describe('POST with body', () => {
                 v1: 'hello',
                 v2: 'world'
             })
-            .set('Content-Type', 'application/json')
+            .set('Content-Type', 'application/json;charset=utf-8')
             .expect('Content-Type', 'application/json')
             .expect({
                 body: {
@@ -80,7 +80,7 @@ describe('POST with body', () => {
                 v1: 'hello',
                 v2: 'world'
             })
-            .set('Content-Type', 'application/json')
+            .set('Content-Type', 'application/json;charset=utf-8')
             .expect('Content-Type', 'application/json')
             .expect({
                 body: {

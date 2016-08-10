@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "rm -rf test-dist;tsc -p tsconfig.test.json;mocha test-dist/test/*.js",
+    "test": "rm -rf test-dist;tsc -p tsconfig.test.json;mocha test-dist/test/*.js --require source-map-support/register",
     "coverage": "rm -rf test-dist;tsc -p tsconfig.test.json;istanbul cover _mocha test-dist/test/*.js",
     "build": "./node_modules/.bin/tsc -p tsconfig.json",
     "lint": "./node_modules/.bin/tslint -c tslint.json ./src/**/*.ts"
@@ -28,6 +28,7 @@
     "chai": "^3.5.0",
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
+    "source-map-support": "^0.4.2",
     "supertest": "^1.2.0",
     "tslint": "^3.14.0",
     "typescript": "^2.1.0-dev.20160721"

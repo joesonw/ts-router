@@ -70,25 +70,26 @@ class Router {
                 let parameters = [];
                 let body = {};
 
+                const contentType = (context.headers['content-type'] || '').split(';');
 
                 //parse body
                 if (matchedRoute.consume === MediaType.JSON &&
-                    context.headers['content-type'] === mediaTypeToString(MediaType.JSON)) {
+                    contentType.indexOf(mediaTypeToString(MediaType.JSON)) !== -1) {
                     body = await new Promise((resolve, reject) => {
                         parse.json(context).then(resolve).catch(reject);
                     });
                 } else if (matchedRoute.consume === MediaType.FORM &&
-                    context.headers['content-type'] === mediaTypeToString(MediaType.FORM)) {
+                    contentType.indexOf(mediaTypeToString(MediaType.FORM)) !== -1) {
                     body = await new Promise((resolve, reject) => {
                         parse.form(context).then(resolve).catch(reject);
                     });
                 } else if (matchedRoute.consume === MediaType.TEXT &&
-                    context.headers['content-type'] === mediaTypeToString(MediaType.TEXT)) {
+                    contentType.indexOf(mediaTypeToString(MediaType.TEXT)) !== -1) {
                     body = await new Promise((resolve, reject) => {
                         parse.text(context).then(resolve).catch(reject);
                     });
                 } else if (matchedRoute.consume === MediaType.MULTIPART &&
-                    (context.headers['content-type'] || '').substr(0, 19) === mediaTypeToString(MediaType.MULTIPART)) {
+                    contentType.indexOf(mediaTypeToString(MediaType.MULTIPART)) !== -1) {
                     let result = await parseMulti(context);
                     body = {};
                     for (let key in result.fields) {
@@ -175,12 +176,10 @@ class Router {
 
                 response = await router[matchedRoute.route](...parameters);
 
-                if (matchedRoute.produce) {
-                    response.headers['Content-Type'] = mediaTypeToString(matchedRoute.produce);
-                }
                 switch (matchedRoute.produce) {
                     case MediaType.JSON:
                         response.body = JSON.stringify(response.body);
+                        response.headers['Content-Type'] = mediaTypeToString(matchedRoute.produce);
                         break;
                 }
 

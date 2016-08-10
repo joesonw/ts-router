@@ -52,27 +52,28 @@ class Router {
                 if (matchedRoute) {
                     let parameters = [];
                     let body = {};
+                    const contentType = context.headers['content-type'].split(';');
                     //parse body
                     if (matchedRoute.consume === util_1.MediaType.JSON &&
-                        context.headers['content-type'] === util_1.mediaTypeToString(util_1.MediaType.JSON)) {
+                        contentType.indexOf(util_1.mediaTypeToString(util_1.MediaType.JSON)) !== -1) {
                         body = yield new Promise((resolve, reject) => {
                             parse.json(context).then(resolve).catch(reject);
                         });
                     }
                     else if (matchedRoute.consume === util_1.MediaType.FORM &&
-                        context.headers['content-type'] === util_1.mediaTypeToString(util_1.MediaType.FORM)) {
+                        contentType.indexOf(util_1.mediaTypeToString(util_1.MediaType.FORM)) !== -1) {
                         body = yield new Promise((resolve, reject) => {
                             parse.form(context).then(resolve).catch(reject);
                         });
                     }
                     else if (matchedRoute.consume === util_1.MediaType.TEXT &&
-                        context.headers['content-type'] === util_1.mediaTypeToString(util_1.MediaType.TEXT)) {
+                        contentType.indexOf(util_1.mediaTypeToString(util_1.MediaType.TEXT)) !== -1) {
                         body = yield new Promise((resolve, reject) => {
                             parse.text(context).then(resolve).catch(reject);
                         });
                     }
                     else if (matchedRoute.consume === util_1.MediaType.MULTIPART &&
-                        (context.headers['content-type'] || '').substr(0, 19) === util_1.mediaTypeToString(util_1.MediaType.MULTIPART)) {
+                        contentType.indexOf(util_1.mediaTypeToString(util_1.MediaType.MULTIPART)) === -1) {
                         let result = yield util_1.parseMulti(context);
                         body = {};
                         for (let key in result.fields) {

@@ -4,7 +4,8 @@
 		"outDir": "./test-dist",
 		"target": "ES6",
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true,
+        "sourceMap": true
 	},
 	"compileOnSave": false,
 	"include": [

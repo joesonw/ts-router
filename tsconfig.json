@@ -5,7 +5,8 @@
 		"target": "ES6",
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-        "declaration": true
+        "declaration": true,
+        "sourceMap": true
 	},
 	"compileOnSave": false,
 	"files": [
