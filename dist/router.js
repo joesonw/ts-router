@@ -52,7 +52,7 @@ class Router {
                 if (matchedRoute) {
                     let parameters = [];
                     let body = {};
-                    const contentType = context.headers['content-type'].split(';');
+                    const contentType = (context.headers['content-type'] || '').split(';');
                     //parse body
                     if (matchedRoute.consume === util_1.MediaType.JSON &&
                         contentType.indexOf(util_1.mediaTypeToString(util_1.MediaType.JSON)) !== -1) {
@@ -73,7 +73,7 @@ class Router {
                         });
                     }
                     else if (matchedRoute.consume === util_1.MediaType.MULTIPART &&
-                        contentType.indexOf(util_1.mediaTypeToString(util_1.MediaType.MULTIPART)) === -1) {
+                        contentType.indexOf(util_1.mediaTypeToString(util_1.MediaType.MULTIPART)) !== -1) {
                         let result = yield util_1.parseMulti(context);
                         body = {};
                         for (let key in result.fields) {
@@ -154,12 +154,10 @@ class Router {
                         yield injection(appContext);
                     }
                     response = yield router[matchedRoute.route](...parameters);
-                    if (matchedRoute.produce) {
-                        response.headers['Content-Type'] = util_1.mediaTypeToString(matchedRoute.produce);
-                    }
                     switch (matchedRoute.produce) {
                         case util_1.MediaType.JSON:
                             response.body = JSON.stringify(response.body);
+                            response.headers['Content-Type'] = util_1.mediaTypeToString(matchedRoute.produce);
                             break;
                     }
                     response.send(appContext);
@@ -210,3 +208,4 @@ class Router {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Router;
+//# sourceMappingURL=router.js.map

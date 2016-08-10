@@ -12,3 +12,4 @@ const router_1 = require('./router');
 exports.Router = router_1.default;
 const controller_1 = require('./controller');
 exports.Controller = controller_1.default;
+//# sourceMappingURL=index.js.map

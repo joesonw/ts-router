@@ -5,3 +5,4 @@ const Properties = Symbol();
 exports.Properties = Properties;
 const RoutePath = Symbol();
 exports.RoutePath = RoutePath;
+//# sourceMappingURL=symbols.js.map
