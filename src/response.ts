@@ -13,7 +13,7 @@ class Response {
     body: any;
     status: number;
     headers: { [key:string] : string};
-    constructor(body:string, status:number, headers: { [key:string] : string}) {
+    constructor(body: string, status: number, headers: { [key:string] : string}) {
         this.body = body;
         this.status = status;
         this.headers = headers;
@@ -21,7 +21,7 @@ class Response {
     send(context: Context) {
         context.body = this.body;
         context.status = this.status;
-        for (let key in this.headers) {
+        for (const key in this.headers) {
             context.set(key, this.headers[key]);
         }
     }
@@ -64,7 +64,7 @@ namespace Response {
         TEMPORARY_REDIRECT = 307,
         UNAUTHORIZED = 401,
         UNSUPPORTED_MEDIA_TYPE = 415,
-        USE_PROXY = 305
+        USE_PROXY = 305,
     };
 }
 
@@ -74,7 +74,7 @@ export class ResponseBuilder {
     private _status: number = 404;
     private _headers: { [key:string] : string} = {};
     private _body: any = ''
-    private _type: string = 'text/plain';
+    private _type: string;
     private _charset: string = null;
     private _allow: string[] = [];
 
@@ -153,8 +153,12 @@ export class ResponseBuilder {
         if (this._charset) {
             contentType         += '; charset=' + this._charset
         }
-        headers['Content-Type'] = contentType;
-        headers['Allow']        = this._allow.join(',');
+        if (contentType) {
+            headers['Content-Type'] = contentType;
+        }
+        if (this._allow.length > 0) {
+            headers['Allow']        = this._allow.join(',');
+        }
         let ret = new Response(body, status, headers);
         return ret;
     }

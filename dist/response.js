@@ -14,9 +14,10 @@ class Response {
     send(context) {
         context.body = this.body;
         context.status = this.status;
-        for (let key in this.headers) {
+        for (const key in this.headers) {
             context.set(key, this.headers[key]);
         }
+        console.log(context);
     }
 }
 (function (Response) {
@@ -68,7 +69,6 @@ class ResponseBuilder {
         this._status = 404;
         this._headers = {};
         this._body = '';
-        this._type = 'text/plain';
         this._charset = null;
         this._allow = [];
     }
@@ -149,8 +149,12 @@ class ResponseBuilder {
         if (this._charset) {
             contentType += '; charset=' + this._charset;
         }
-        headers['Content-Type'] = contentType;
-        headers['Allow'] = this._allow.join(',');
+        if (contentType) {
+            headers['Content-Type'] = contentType;
+        }
+        if (this._allow.length > 0) {
+            headers['Allow'] = this._allow.join(',');
+        }
         let ret = new Response(body, status, headers);
         return ret;
     }
